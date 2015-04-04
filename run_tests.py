@@ -11,7 +11,7 @@ ALGORITHMS_DIR = os.path.abspath(os.path.dirname(__file__))
 
 class BaseTestHandler(unittest.TestCase):
 
-    ext = None
+    extensions = None
 
     def __init__(self, src_file):
         super().__init__()
@@ -44,7 +44,7 @@ class BaseTestHandler(unittest.TestCase):
 
 class PythonTestHandler(BaseTestHandler):
 
-    ext = '.py'
+    extensions = ('.py', )
 
     def runTest(self):
         with open(self._in_file) as stdin_fd:
@@ -54,17 +54,17 @@ class PythonTestHandler(BaseTestHandler):
         self.compareOutput()
 
 
-class CTestHandler(BaseTestHandler):
+class GCCTestHandler(BaseTestHandler):
 
-    ext = '.c'
+    extensions = ('.c', '.cpp')
 
     def __init__(self, src_file):
         super().__init__(src_file)
         self._exec_file = os.path.splitext(self._src_file)[0]
 
     def setUp(self):
-        subprocess.call(['gcc', self._src_file,
-                         '-o', self._exec_file])
+        subprocess.call(['gcc' if self._src_file.endswith('.c') else 'g++',
+                         self._src_file, '-o', self._exec_file])
 
     def runTest(self):
         with open(self._in_file) as stdin_fd:
@@ -82,15 +82,16 @@ class CTestHandler(BaseTestHandler):
 def main():
     handlers = {}
     for handler_cls in BaseTestHandler.__subclasses__():
-        handlers[handler_cls.ext] = handler_cls
+        for extension in handler_cls.extensions:
+            handlers[extension] = handler_cls
     suite = unittest.TestSuite()
     for dirpath, dirnames, filenames in os.walk(ALGORITHMS_DIR):
         if dirpath != ALGORITHMS_DIR:
             for filename in filenames:
-                ext = os.path.splitext(filename)[1]
-                if ext in handlers:
+                extension = os.path.splitext(filename)[1]
+                if extension in handlers:
                     src_file = os.path.join(dirpath, filename)
-                    handler = handlers[ext](src_file)
+                    handler = handlers[extension](src_file)
                     suite.addTest(handler)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
