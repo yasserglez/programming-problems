@@ -46,15 +46,37 @@ class PythonTestHandler(BaseTestHandler):
 
     ext = '.py'
 
-    def __init__(self, src_file):
-        super().__init__(src_file)
-
     def runTest(self):
         with open(self._in_file) as stdin_fd:
             with open(self._tmp_file, 'w') as stdout_fd:
                 subprocess.call(['python', self._src_file],
                                 stdin=stdin_fd, stdout=stdout_fd)
         self.compareOutput()
+
+
+class CTestHandler(BaseTestHandler):
+
+    ext = '.c'
+
+    def __init__(self, src_file):
+        super().__init__(src_file)
+        self._exec_file = os.path.splitext(self._src_file)[0]
+
+    def setUp(self):
+        subprocess.call(['gcc', self._src_file,
+                         '-o', self._exec_file])
+
+    def runTest(self):
+        with open(self._in_file) as stdin_fd:
+            with open(self._tmp_file, 'w') as stdout_fd:
+                subprocess.call([self._exec_file],
+                                stdin=stdin_fd, stdout=stdout_fd)
+        self.compareOutput()
+
+    def tearDown(self):
+        super().tearDown()
+        if os.path.isfile(self._exec_file):
+            os.remove(self._exec_file)
 
 
 def main():
