@@ -16,6 +16,7 @@ class BaseTestHandler(unittest.TestCase):
     def __init__(self, src_file):
         super().__init__()
         self._src_file = src_file
+        self._src_dir = os.path.dirname(self._src_file)
         basename = os.path.splitext(self._src_file)[0]
         self._in_file = basename + '.in'
         self._out_file = basename + '.out'
@@ -60,23 +61,45 @@ class GCCTestHandler(BaseTestHandler):
 
     def __init__(self, src_file):
         super().__init__(src_file)
-        self._exec_file = os.path.splitext(self._src_file)[0]
+        self._bin_file = os.path.splitext(self._src_file)[0]
 
     def setUp(self):
         subprocess.call(['gcc' if self._src_file.endswith('.c') else 'g++',
-                         self._src_file, '-o', self._exec_file])
+                         self._src_file, '-o', self._bin_file])
 
     def runTest(self):
         with open(self._in_file) as stdin_fd:
             with open(self._tmp_file, 'w') as stdout_fd:
-                subprocess.call([self._exec_file],
+                subprocess.call([self._bin_file],
                                 stdin=stdin_fd, stdout=stdout_fd)
         self.compareOutput()
 
     def tearDown(self):
         super().tearDown()
-        if os.path.isfile(self._exec_file):
-            os.remove(self._exec_file)
+        if os.path.isfile(self._bin_file):
+            os.remove(self._bin_file)
+
+
+class JavaTestHandler(BaseTestHandler):
+
+    extensions = ('.java', )
+
+    def setUp(self):
+        subprocess.call(['javac', self._src_file])
+
+    def runTest(self):
+        classname = os.path.splitext(os.path.basename(self._src_file))[0]
+        with open(self._in_file) as stdin_fd:
+            with open(self._tmp_file, 'w') as stdout_fd:
+                subprocess.call(['java', '-cp', self._src_dir,  classname],
+                                stdin=stdin_fd, stdout=stdout_fd)
+        self.compareOutput()
+
+    def tearDown(self):
+        super().tearDown()
+        classfile = os.path.splitext(self._src_file)[0] + '.class'
+        if os.path.isfile(classfile):
+            os.remove(classfile)
 
 
 def main():
