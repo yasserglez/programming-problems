@@ -57,7 +57,7 @@ class PythonTestHandler(BaseTestHandler):
 
 class GCCTestHandler(BaseTestHandler):
 
-    extensions = ('.c', '.cpp')
+    extensions = ('.c', '.cc', '.cpp')
 
     def __init__(self, src_file):
         super().__init__(src_file)
