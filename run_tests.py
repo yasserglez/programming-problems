@@ -65,7 +65,7 @@ class PythonTestHandler(BaseTestHandler):
     extensions = ('.py', )
 
     def runTest(self):
-        super().runTest(['python', self._src_file])
+        super().runTest(['python3', self._src_file])
 
 
 class GCCTestHandler(BaseTestHandler):
