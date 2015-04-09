@@ -25,22 +25,35 @@ class BaseTestHandler(unittest.TestCase):
     def __str__(self):
         return self._src_file[len(ALGORITHMS_DIR) + 1:]
 
-    def setUp(self):  # compile
+    def setUp(self):  # Compile.
         pass
 
-    def runTest(self):  # run program and call compareOutput
-        pass
-
-    def compareOutput(self):
-        with open(self._out_file) as out_fd:
-            with open(self._tmp_file) as tmp_fd:
+    def runTest(self, args):
+        # Run the program.
+        with open(self._in_file) as stdin_fd:
+            with open(self._tmp_file, 'w') as stdout_fd:
+                subprocess.call(args, stdin=stdin_fd, stdout=stdout_fd)
+        # Compare the output.
+        with open(self._tmp_file) as tmp_fd:
+            with open(self._out_file) as out_fd:
                 for out_line, tmp_line in itertools.zip_longest(out_fd, tmp_fd):
                     if out_line != tmp_line:
                         self.fail("output doesn't match")
 
-    def tearDown(self):  # cleanup
+    def tearDown(self):  # Cleaning up.
         if os.path.isfile(self._tmp_file):
             os.remove(self._tmp_file)
+
+    @classmethod
+    def iter_handlers(cls):
+        stack = [cls]
+        while stack:
+            cls = stack.pop()
+            if cls.extensions:
+                yield cls
+            for subcls in cls.__subclasses__():
+                stack.append(subcls)
+
 
 
 class PythonTestHandler(BaseTestHandler):
@@ -48,36 +61,43 @@ class PythonTestHandler(BaseTestHandler):
     extensions = ('.py', )
 
     def runTest(self):
-        with open(self._in_file) as stdin_fd:
-            with open(self._tmp_file, 'w') as stdout_fd:
-                subprocess.call(['python', self._src_file],
-                                stdin=stdin_fd, stdout=stdout_fd)
-        self.compareOutput()
+        super().runTest(['python', self._src_file])
 
 
 class GCCTestHandler(BaseTestHandler):
-
-    extensions = ('.c', '.cc', '.cpp')
 
     def __init__(self, src_file):
         super().__init__(src_file)
         self._bin_file = os.path.splitext(self._src_file)[0]
 
-    def setUp(self):
-        subprocess.call(['gcc' if self._src_file.endswith('.c') else 'g++',
-                         self._src_file, '-o', self._bin_file])
-
     def runTest(self):
-        with open(self._in_file) as stdin_fd:
-            with open(self._tmp_file, 'w') as stdout_fd:
-                subprocess.call([self._bin_file],
-                                stdin=stdin_fd, stdout=stdout_fd)
-        self.compareOutput()
+        super().runTest([self._bin_file])
 
     def tearDown(self):
         super().tearDown()
         if os.path.isfile(self._bin_file):
             os.remove(self._bin_file)
+
+
+class CTestHandler(GCCTestHandler):
+
+    extensions = ('.c', )
+
+    def setUp(self):
+        subprocess.call(['gcc', '-std=c99',
+                         '-D_POSIX_C_SOURCE=200809L',
+                         '-Wall', '-Wextra', '-Werror', '-pedantic',
+                         self._src_file, '-o', self._bin_file])
+
+
+class CPPTestHandler(GCCTestHandler):
+
+    extensions = ('.cc', '.cpp')
+
+    def setUp(self):
+        subprocess.call(['g++', '-std=c++11',
+                         '-Wall', '-Wextra', '-Werror', '-pedantic',
+                         self._src_file, '-o', self._bin_file])
 
 
 class JavaTestHandler(BaseTestHandler):
@@ -89,11 +109,7 @@ class JavaTestHandler(BaseTestHandler):
 
     def runTest(self):
         classname = os.path.splitext(os.path.basename(self._src_file))[0]
-        with open(self._in_file) as stdin_fd:
-            with open(self._tmp_file, 'w') as stdout_fd:
-                subprocess.call(['java', '-cp', self._src_dir,  classname],
-                                stdin=stdin_fd, stdout=stdout_fd)
-        self.compareOutput()
+        super().runTest(['java', '-cp', self._src_dir,  classname])
 
     def tearDown(self):
         super().tearDown()
@@ -104,7 +120,7 @@ class JavaTestHandler(BaseTestHandler):
 
 def main():
     handlers = {}
-    for handler_cls in BaseTestHandler.__subclasses__():
+    for handler_cls in BaseTestHandler.iter_handlers():
         for extension in handler_cls.extensions:
             handlers[extension] = handler_cls
     suite = unittest.TestSuite()
