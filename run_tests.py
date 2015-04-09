@@ -88,7 +88,7 @@ class CTestHandler(GCCTestHandler):
     extensions = ('.c', )
 
     def setUp(self):
-        subprocess.call(['gcc', '-std=c99',
+        subprocess.call(['gcc', '-ansi',
                          '-D_POSIX_C_SOURCE=200809L',
                          '-Wall', '-Wextra', '-Werror', '-pedantic',
                          self._src_file, '-o', self._bin_file])
@@ -99,7 +99,7 @@ class CPPTestHandler(GCCTestHandler):
     extensions = ('.cc', '.cpp')
 
     def setUp(self):
-        subprocess.call(['g++', '-std=c++11',
+        subprocess.call(['g++', '-ansi',
                          '-Wall', '-Wextra', '-Werror', '-pedantic',
                          self._src_file, '-o', self._bin_file])
 
