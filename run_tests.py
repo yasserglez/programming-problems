@@ -30,9 +30,14 @@ class BaseTestHandler(unittest.TestCase):
 
     def runTest(self, args):
         # Run the program.
-        with open(self._in_file) as stdin_fd:
-            with open(self._tmp_file, 'w') as stdout_fd:
-                subprocess.call(args, stdin=stdin_fd, stdout=stdout_fd)
+        if os.path.isfile(self._in_file):
+            stdin_fd = open(self._in_file)
+        else:
+            stdin_fd = None
+        with open(self._tmp_file, 'w') as stdout_fd:
+            subprocess.call(args, stdin=stdin_fd, stdout=stdout_fd)
+        if stdin_fd:
+            stdin_fd.close()
         # Compare the output.
         with open(self._tmp_file) as tmp_fd:
             with open(self._out_file) as out_fd:
@@ -53,7 +58,6 @@ class BaseTestHandler(unittest.TestCase):
                 yield cls
             for subcls in cls.__subclasses__():
                 stack.append(subcls)
-
 
 
 class PythonTestHandler(BaseTestHandler):
