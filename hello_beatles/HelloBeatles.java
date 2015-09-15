@@ -5,8 +5,8 @@ class HelloBeatles {
     public static void main(String[] args) {
 	Scanner input = new Scanner(System.in);
 
-	while (input.hasNext()) {
-	    System.out.println("Hello, " + input.next() + "!");
+	while (input.hasNextLine()) {
+	    System.out.println("Hello, " + input.nextLine() + "!");
 	}
     }
 }
