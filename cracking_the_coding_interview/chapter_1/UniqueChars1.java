@@ -1,4 +1,3 @@
-import java.util.Scanner;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -20,10 +19,12 @@ public class UniqueChars1 {
 	}
 	
 	public static void main(String[] args) {
-		Scanner input = new Scanner(System.in);
-		
-		while (input.hasNextLine()) {
-			System.out.println(uniqueChars1(input.nextLine()) ? 1 : 0);
-		}
+		System.out.println(uniqueChars1(""));
+		System.out.println(uniqueChars1("a"));
+		System.out.println(uniqueChars1("aa"));
+		System.out.println(uniqueChars1("abc"));
+		System.out.println(uniqueChars1("abca"));
+		System.out.println(uniqueChars1("abcb"));
+		System.out.println(uniqueChars1("abcc"));
 	}
 }

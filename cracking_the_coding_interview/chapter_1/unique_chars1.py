@@ -1,6 +1,3 @@
-import fileinput
-
-
 # Time complexity: O(n)
 # Auxiliary space complexity: O(n)
 
@@ -9,6 +6,10 @@ def unique_chars1(s):
 
 
 if __name__ == '__main__':
-    for line in fileinput.input():
-        s = line.strip()
-        print(int(unique_chars1(s)))
+    print(unique_chars1(""))
+    print(unique_chars1("a"))
+    print(unique_chars1("aa"))
+    print(unique_chars1("abc"))
+    print(unique_chars1("abca"))
+    print(unique_chars1("abcb"))
+    print(unique_chars1("abcc"))
