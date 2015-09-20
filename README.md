@@ -1,6 +1,8 @@
 Solutions to programming problems
 =================================
 
+[![Build Status](https://travis-ci.org/yasserglez/programming-problems.svg?branch=master)](https://travis-ci.org/yasserglez/programming-problems)
+
 This repository contains solutions to different programming problems.
 
 The `run_tests.py` script compiles and runs all the programs,
