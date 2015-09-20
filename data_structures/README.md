@@ -1,1 +1,1 @@
-Implementation of a few elementary data structures.
+Implementation of elementary data structures.
