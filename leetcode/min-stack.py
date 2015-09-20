@@ -1,3 +1,8 @@
+# https://leetcode.com/problems/min-stack/
+#
+# Time complexity: O(1)
+# Auxiliary space complexity: O(n)
+
 
 class MinStackError(Exception):
     pass
