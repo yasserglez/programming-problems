@@ -1,1 +1,1 @@
-Solutions from the [LeetCode Online Judge](https://leetcode.com).
+Problems from the [LeetCode Online Judge](https://leetcode.com).

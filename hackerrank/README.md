@@ -1,1 +1,1 @@
-Solutions from [HackerRank](https://www.hackerrank.com).
+Problems from [HackerRank](https://www.hackerrank.com).
