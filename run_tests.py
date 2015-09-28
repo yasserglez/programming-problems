@@ -114,7 +114,7 @@ class JavaTestHandler(BaseTestHandler):
 
     def runTest(self):
         classname = os.path.splitext(os.path.basename(self._src_file))[0]
-        super().runTest(['java', '-cp', self._src_dir,  classname])
+        super().runTest(['java', '-cp', self._src_dir, '-ea', classname])
 
     def tearDown(self):
         super().tearDown()
