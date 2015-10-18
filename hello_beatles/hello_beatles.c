@@ -15,7 +15,7 @@ main(void)
         printf("Hello, %s!\n", buffer);
     }
 
-    free(buffer);
+    if (buffer != NULL) free(buffer);
 
     return EXIT_SUCCESS;
 }
