@@ -8,24 +8,51 @@ import collections
 class Values(object):
 
     def __init__(self):
-        self._max_heap = []
-        self._min_heap = []
         self._values = collections.Counter()
+        self._max_heap = []
+        self._max_heap_count = 0
+        self._max_heap_bl = collections.Counter()
+        self._min_heap = []
+        self._min_heap_count = 0
+        self._min_heap_bl = collections.Counter()
 
     def __len__(self):
-        return len(self._max_heap) + len(self._min_heap)
+        return self._max_heap_count + self._min_heap_count
 
     def __contains__(self, x):
         return self._values[x] > 0
 
+    def _update_heaps(self):
+        self._cleanup_heaps()
+        self._balance_heaps()
+        self._cleanup_heaps()
+
     def _balance_heaps(self):
         # Balance the heaps if necessary.
-        if len(self._max_heap) - len(self._min_heap) > 1:
-            y = -heapq.heappop(self._max_heap)
-            heapq.heappush(self._min_heap, y)
-        if len(self._min_heap) - len(self._max_heap) > 1:
-            y = heapq.heappop(self._min_heap)
-            heapq.heappush(self._max_heap, -y)
+
+        if self._max_heap_count - self._min_heap_count > 1:
+            x = -heapq.heappop(self._max_heap)
+            self._max_heap_count -= 1
+            heapq.heappush(self._min_heap, x)
+            self._min_heap_count += 1
+
+        if self._min_heap_count - self._max_heap_count > 1:
+            x = heapq.heappop(self._min_heap)
+            self._min_heap_count -= 1
+            heapq.heappush(self._max_heap, -x)
+            self._max_heap_count += 1
+
+    def _cleanup_heaps(self):
+        # Ensure that the top element of each heap is not blacklisted.
+        self._cleanup_heap(self._max_heap, self._max_heap_bl)
+        self._cleanup_heap(self._min_heap, self._min_heap_bl)
+
+    def _cleanup_heap(self, heap, heap_bl):
+        while heap and heap_bl[heap[0]] > 0:
+            x = heapq.heappop(heap)
+            heap_bl[x] -= 1
+            if heap_bl[x] == 0:
+                del heap_bl[x]
 
     def add(self, x):
         self._values[x] += 1
@@ -33,28 +60,32 @@ class Values(object):
         # Add x to the correct heap.
         if not self._max_heap or x <= -self._max_heap[0]:
             heapq.heappush(self._max_heap, -x)
+            self._max_heap_count += 1
         else:
             heapq.heappush(self._min_heap, x)
+            self._min_heap_count += 1
 
-        self._balance_heaps()
+        self._update_heaps()
 
     def remove(self, x):
         self._values[x] -= 1
+        if self._values[x] == 0:
+            del self._values[x]
 
-        # Remove the element and restore the heap property.
+        # Add the element to the blacklist.
         if x <= -self._max_heap[0]:
-            self._max_heap.remove(-x)
-            heapq.heapify(self._max_heap)
+            self._max_heap_bl[-x] += 1
+            self._max_heap_count -= 1
         else:
-            self._min_heap.remove(x)
-            heapq.heapify(self._min_heap)
+            self._min_heap_bl[x] += 1
+            self._min_heap_count -= 1
 
-        self._balance_heaps()
+        self._update_heaps()
 
     def get_median(self):
-        if len(self._max_heap) > len(self._min_heap):
+        if self._max_heap_count > self._min_heap_count:
             return -self._max_heap[0]
-        elif len(self._min_heap) > len(self._max_heap):
+        elif self._min_heap_count > self._max_heap_count:
             return self._min_heap[0]
         else:
             x = -self._max_heap[0]
