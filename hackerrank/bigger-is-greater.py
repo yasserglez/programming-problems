@@ -1,6 +1,6 @@
 # https://www.hackerrank.com/challenges/bigger-is-greater
 
-import fileinput
+import sys
 
 
 def bigger_is_greater(word):
@@ -24,8 +24,8 @@ def bigger_is_greater(word):
 
 
 if __name__ == '__main__':
-    with fileinput.input() as fi:
-        T = int(fi.readline())
-        for t in range(T):
-            word = fi.readline().rstrip()
-            print(bigger_is_greater(word))
+    f = sys.stdin
+    T = int(f.readline())
+    for t in range(T):
+        word = f.readline().rstrip()
+        print(bigger_is_greater(word))

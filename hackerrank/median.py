@@ -1,6 +1,6 @@
 # https://www.hackerrank.com/challenges/median
 
-import fileinput
+import sys
 import heapq
 import collections
 
@@ -99,20 +99,20 @@ def format_median(median):
 
 if __name__ == '__main__':
     values = Values()
-    with fileinput.input() as fi:
-        N = int(fi.readline())
-        for n in range(N):
-            op, x = fi.readline().strip().split()
-            x = int(x)
-            if op == 'a':
-                values.add(x)
-                print(format_median(values.get_median()))
-            elif op == 'r':
-                if x in values:
-                    values.remove(x)
-                    if values:
-                        print(format_median(values.get_median()))
-                    else:
-                        print('Wrong!')
+    f = sys.stdin
+    N = int(f.readline())
+    for n in range(N):
+        op, x = f.readline().strip().split()
+        x = int(x)
+        if op == 'a':
+            values.add(x)
+            print(format_median(values.get_median()))
+        elif op == 'r':
+            if x in values:
+                values.remove(x)
+                if values:
+                    print(format_median(values.get_median()))
                 else:
                     print('Wrong!')
+            else:
+                print('Wrong!')

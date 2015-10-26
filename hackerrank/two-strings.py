@@ -1,6 +1,6 @@
 # https://www.hackerrank.com/challenges/two-strings
 
-import fileinput
+import sys
 
 
 def have_common_substring(A, B):
@@ -9,9 +9,9 @@ def have_common_substring(A, B):
 
 
 if __name__ == '__main__':
-    with fileinput.FileInput() as fi:
-        T = int(fi.readline())
-        for t in range(T):
-            A = fi.readline().rstrip()
-            B = fi.readline().rstrip()
-            print('YES' if have_common_substring(A, B) else 'NO')
+    f = sys.stdin
+    T = int(f.readline())
+    for t in range(T):
+        A = f.readline().rstrip()
+        B = f.readline().rstrip()
+        print('YES' if have_common_substring(A, B) else 'NO')

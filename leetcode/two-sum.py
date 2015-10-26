@@ -1,7 +1,7 @@
 # https://leetcode.com/problems/two-sum/
 
-import fileinput
 import collections
+import sys
 
 
 def twoSum(numbers, target):
@@ -18,10 +18,10 @@ def twoSum(numbers, target):
 
 
 if __name__ == '__main__':
-    with fileinput.input() as fi:
-        test_cases = int(fi.readline())
-        for i in range(test_cases):
-            numbers = list(map(int, fi.readline().strip().split()))
-            target = int(fi.readline())
-            index1, index2 = twoSum(numbers, target)
-            print(index1, index2)
+    f = sys.stdin
+    test_cases = int(f.readline())
+    for i in range(test_cases):
+        numbers = list(map(int, f.readline().strip().split()))
+        target = int(f.readline())
+        index1, index2 = twoSum(numbers, target)
+        print(index1, index2)
