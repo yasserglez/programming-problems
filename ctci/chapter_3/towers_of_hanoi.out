@@ -1,3 +1,4 @@
+[3, 2, 1] [] []
 move one disk from A to C
 move one disk from A to B
 move one disk from C to B
@@ -5,27 +6,4 @@ move one disk from A to C
 move one disk from B to A
 move one disk from B to C
 move one disk from A to C
-move one disk from A to B
-move one disk from C to B
-move one disk from C to A
-move one disk from B to A
-move one disk from C to B
-move one disk from A to C
-move one disk from A to B
-move one disk from C to B
-move one disk from A to C
-move one disk from B to A
-move one disk from B to C
-move one disk from A to C
-move one disk from B to A
-move one disk from C to B
-move one disk from C to A
-move one disk from B to A
-move one disk from B to C
-move one disk from A to C
-move one disk from A to B
-move one disk from C to B
-move one disk from A to C
-move one disk from B to A
-move one disk from B to C
-move one disk from A to C
+[] [] [3, 2, 1]
