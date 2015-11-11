@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
+import contextlib
 import os
-import sys
-import itertools
-import unittest
 import subprocess
+import sys
+import unittest
+from itertools import zip_longest
 
 
 ALGORITHMS_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -29,20 +30,30 @@ class BaseTestHandler(unittest.TestCase):
     def setUp(self):  # Compile.
         pass
 
+    @contextlib.contextmanager
+    def _src_dir_as_cwd(self):
+        prev_cwd = os.getcwd()
+        os.chdir(self._src_dir)
+        try:
+            yield
+        finally:
+            os.chdir(prev_cwd)
+
     def runTest(self, args):
         # Run the program.
         if os.path.isfile(self._in_file):
             stdin_fd = open(self._in_file)
         else:
             stdin_fd = None
-        with open(self._tmp_file, 'w') as stdout_fd:
-            subprocess.call(args, stdin=stdin_fd, stdout=stdout_fd)
+        with self._src_dir_as_cwd():
+            with open(self._tmp_file, 'w') as stdout_fd:
+                subprocess.call(args, stdin=stdin_fd, stdout=stdout_fd)
         if stdin_fd:
             stdin_fd.close()
         # Compare the output.
         with open(self._tmp_file) as tmp_fd:
             with open(self._out_file) as out_fd:
-                for out_line, tmp_line in itertools.zip_longest(out_fd, tmp_fd):
+                for out_line, tmp_line in zip_longest(out_fd, tmp_fd):
                     if out_line != tmp_line:
                         self.fail("output doesn't match")
 
@@ -122,7 +133,7 @@ class JavaTestHandler(BaseTestHandler):
 
     def runTest(self):
         classname = os.path.splitext(os.path.basename(self._src_file))[0]
-        super().runTest(['java', '-cp', self._src_dir, '-ea', classname])
+        super().runTest(['java', '-ea', classname])
 
     def tearDown(self):
         super().tearDown()
