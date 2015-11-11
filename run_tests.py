@@ -69,6 +69,14 @@ class PythonTestHandler(BaseTestHandler):
         super().runTest(['python3', self._src_file])
 
 
+class RTestHandler(BaseTestHandler):
+
+    extensions = ('.R', )
+
+    def runTest(self):
+        super().runTest(['Rscript', '--vanilla', self._src_file])
+
+
 class GCCTestHandler(BaseTestHandler):
 
     def __init__(self, src_file):
