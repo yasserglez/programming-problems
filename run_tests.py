@@ -159,9 +159,9 @@ def main():
         for extension in handler_cls.extensions:
             handlers[extension] = handler_cls
     suite = unittest.TestSuite()
-    for dirpath, dirnames, filenames in os.walk(ROOT_DIR):
+    for dirpath, _, filenames in sorted(os.walk(ROOT_DIR), key=lambda t: t[0]):
         if dirpath != ROOT_DIR:
-            for filename in filenames:
+            for filename in sorted(filenames):
                 extension = os.path.splitext(filename)[1]
                 if extension in handlers:
                     src_file = os.path.join(dirpath, filename)
