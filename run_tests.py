@@ -137,8 +137,7 @@ class JavaTestHandler(BaseTestHandler):
 
     def tearDown(self):
         super().tearDown()
-        classfile = os.path.splitext(self._src_file)[0] + '.class'
-        if os.path.isfile(classfile):
+        for classfile in (f for f in os.listdir() if f.endswith('.class')):
             os.remove(classfile)
 
 
