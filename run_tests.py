@@ -8,7 +8,7 @@ import unittest
 from itertools import zip_longest
 
 
-ALGORITHMS_DIR = os.path.abspath(os.path.dirname(__file__))
+ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class BaseTestHandler(unittest.TestCase):
@@ -25,7 +25,7 @@ class BaseTestHandler(unittest.TestCase):
         self._tmp_file = basename + '.tmp'
 
     def __str__(self):
-        return self._src_file[len(ALGORITHMS_DIR) + 1:]
+        return self._src_file[len(ROOT_DIR) + 1:]
 
     def setUp(self):  # Compile.
         pass
@@ -159,8 +159,8 @@ def main():
         for extension in handler_cls.extensions:
             handlers[extension] = handler_cls
     suite = unittest.TestSuite()
-    for dirpath, dirnames, filenames in os.walk(ALGORITHMS_DIR):
-        if dirpath != ALGORITHMS_DIR:
+    for dirpath, dirnames, filenames in os.walk(ROOT_DIR):
+        if dirpath != ROOT_DIR:
             for filename in filenames:
                 extension = os.path.splitext(filename)[1]
                 if extension in handlers:
