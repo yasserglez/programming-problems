@@ -141,16 +141,12 @@ class JavaTestHandler(BaseTestHandler):
             os.remove(classfile)
 
 
-class ScalaTestHandler(JavaTestHandler):
+class ScalaTestHandler(BaseTestHandler):
 
     extensions = ('.scala', )
 
-    def setUp(self):
-        subprocess.call(['scalac', self._src_file])
-
     def runTest(self):
-        classname = os.path.splitext(os.path.basename(self._src_file))[0]
-        super(JavaTestHandler, self).runTest(['scala', classname])
+        super().runTest(['scala', '-howtorun:script', self._src_file])
 
 
 def main():
