@@ -140,8 +140,9 @@ class JavaTestHandler(BaseTestHandler):
 
     def tearDown(self):
         super().tearDown()
-        for classfile in (f for f in os.listdir() if f.endswith('.class')):
-            os.remove(classfile)
+        for entry in os.listdir(self._src_dir):
+            if entry.endswith('.class'):
+                os.remove(os.path.join(self._src_dir, entry))
 
 
 class ScalaTestHandler(BaseTestHandler):
