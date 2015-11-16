@@ -1,0 +1,12 @@
+CREATE TABLE beatles (
+  id INTEGER PRIMARY KEY,
+  name VARCHAR(16)
+);
+
+INSERT INTO beatles
+  (id, name)
+VALUES
+  (1, "John"),
+  (2, "Paul"),
+  (3, "George"),
+  (4, "Ringo");

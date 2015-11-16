@@ -8,6 +8,7 @@ addons:
       - g++
       - default-jdk
       - scala
+      - sqlite3
 before_script:
   - python3 --version
   - Rscript --version
@@ -15,4 +16,5 @@ before_script:
   - g++ --version
   - javac -version
   - scalac -version
+  - sqlite3 -version
 script: ./run_tests.py

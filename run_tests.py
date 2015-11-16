@@ -51,6 +51,9 @@ class BaseTestHandler(unittest.TestCase):
         if stdin_fd:
             stdin_fd.close()
         # Compare the output.
+        self.compareOutput()
+
+    def compareOutput(self):
         with open(self._tmp_file) as tmp_fd:
             with open(self._out_file) as out_fd:
                 for out_line, tmp_line in zip_longest(out_fd, tmp_fd):
@@ -147,6 +150,36 @@ class ScalaTestHandler(BaseTestHandler):
 
     def runTest(self):
         super().runTest(['scala', '-howtorun:script', self._src_file])
+
+
+class SQLTestHandler(BaseTestHandler):
+
+    extensions = ('.sql', )
+
+    def __init__(self, src_file):
+        super().__init__(src_file)
+        self._db_file = os.path.splitext(self._src_file)[0] + '.db'
+
+    def setUp(self):
+        if os.path.isfile(self._in_file):
+            stdin_fd = open(self._in_file)
+            subprocess.call(['sqlite3', self._db_file], stdin=stdin_fd)
+            stdin_fd.close()
+
+    def runTest(self):
+        # Run the query.
+        with self._src_dir_as_cwd():
+            with open(self._src_file) as stdin_fd:
+                with open(self._tmp_file, 'w') as stdout_fd:
+                    args = ['sqlite3', self._db_file]
+                    subprocess.call(args, stdin=stdin_fd, stdout=stdout_fd)
+        # Compare the output.
+        self.compareOutput()
+
+    def tearDown(self):
+        super().tearDown()
+        if os.path.isfile(self._db_file):
+            os.remove(self._db_file)
 
 
 def main():

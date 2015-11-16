@@ -15,11 +15,14 @@ the following programming languages:
 * C++ (`.cc`, `.cpp`)
 * Java (`.java`)
 * Scala (`.scala`)
+* SQL (`.sql`)
 
-Each program is contained in a single file, and its expected output is
-in a file named the same as the program but with the `.out` extension.
-Also, if a file with the `.in` extension exists, its content is passed
-as the standard input when running the program.
+Each program is contained in a single file, and their expected output
+is given in a file named the same as the program but with the `.out`
+extension. Also, if a file with the `.in` extension exists, its
+content is passed as the standard input when running the program
+(in the case of SQL scripts, the `.in` file is used to initialize
+a SQLite database).
 
 Author
 ------
