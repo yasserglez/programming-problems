@@ -10,9 +10,9 @@ verifying they produce the expected output. Currently it supports
 the following programming languages:
 
 * Python (`.py`)
-* R (`.R`)
+* R (`.R`, `.r`)
 * C (`.c`)
-* C++ (`.cc`, `.cpp`)
+* C++ (`.cpp`, `.cc`)
 * Java (`.java`)
 * Scala (`.scala`)
 * SQL (`.sql`)

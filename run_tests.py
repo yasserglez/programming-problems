@@ -85,7 +85,7 @@ class PythonTestHandler(BaseTestHandler):
 
 class RTestHandler(BaseTestHandler):
 
-    extensions = ('.R', )
+    extensions = ('.R', '.r')
 
     def runTest(self):
         super().runTest(['Rscript', '--vanilla', self._src_file])
@@ -119,7 +119,7 @@ class CTestHandler(GCCTestHandler):
 
 class CPPTestHandler(GCCTestHandler):
 
-    extensions = ('.cc', '.cpp')
+    extensions = ('.cpp', '.cc')
 
     def setUp(self):
         subprocess.call(['g++', '-ansi',
