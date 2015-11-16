@@ -6,7 +6,7 @@ Programming problems
 This repository contains solutions to different programming problems.
 
 The `run_tests.py` script compiles and runs all the programs,
-verifying they produce the expected output. Currently it supports
+checking they produce the expected output. Currently it supports
 the following programming languages:
 
 * Python (`.py`)

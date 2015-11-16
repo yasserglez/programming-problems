@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import contextlib
 import os
 import subprocess
@@ -8,16 +9,14 @@ import unittest
 from itertools import zip_longest
 
 
-ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
-
-
 class BaseTestHandler(unittest.TestCase):
 
     extensions = None
 
-    def __init__(self, src_file):
+    def __init__(self, tests_dir, src_file):
         super().__init__()
-        self._src_file = src_file
+        self._tests_dir = os.path.abspath(tests_dir)
+        self._src_file = os.path.join(self._tests_dir, src_file)
         self._src_dir = os.path.dirname(self._src_file)
         basename = os.path.splitext(self._src_file)[0]
         self._in_file = basename + '.in'
@@ -25,7 +24,7 @@ class BaseTestHandler(unittest.TestCase):
         self._tmp_file = basename + '.tmp'
 
     def __str__(self):
-        return self._src_file[len(ROOT_DIR) + 1:]
+        return self._src_file[len(self._tests_dir) + 1:]
 
     def setUp(self):  # Compile.
         pass
@@ -45,8 +44,8 @@ class BaseTestHandler(unittest.TestCase):
             stdin_fd = open(self._in_file)
         else:
             stdin_fd = None
-        with self._src_dir_as_cwd():
-            with open(self._tmp_file, 'w') as stdout_fd:
+        with open(self._tmp_file, 'w') as stdout_fd:
+            with self._src_dir_as_cwd():
                 subprocess.call(args, stdin=stdin_fd, stdout=stdout_fd)
         if stdin_fd:
             stdin_fd.close()
@@ -93,8 +92,8 @@ class RTestHandler(BaseTestHandler):
 
 class GCCTestHandler(BaseTestHandler):
 
-    def __init__(self, src_file):
-        super().__init__(src_file)
+    def __init__(self, tests_dir, src_file):
+        super().__init__(tests_dir, src_file)
         self._bin_file = os.path.splitext(self._src_file)[0]
 
     def runTest(self):
@@ -157,8 +156,8 @@ class SQLTestHandler(BaseTestHandler):
 
     extensions = ('.sql', )
 
-    def __init__(self, src_file):
-        super().__init__(src_file)
+    def __init__(self, tests_dir, src_file):
+        super().__init__(tests_dir, src_file)
         self._db_file = os.path.splitext(self._src_file)[0] + '.db'
 
     def setUp(self):
@@ -169,9 +168,9 @@ class SQLTestHandler(BaseTestHandler):
 
     def runTest(self):
         # Run the query.
-        with self._src_dir_as_cwd():
-            with open(self._src_file) as stdin_fd:
-                with open(self._tmp_file, 'w') as stdout_fd:
+        with open(self._src_file) as stdin_fd:
+            with open(self._tmp_file, 'w') as stdout_fd:
+                with self._src_dir_as_cwd():
                     args = ['sqlite3', self._db_file]
                     subprocess.call(args, stdin=stdin_fd, stdout=stdout_fd)
         # Compare the output.
@@ -183,19 +182,21 @@ class SQLTestHandler(BaseTestHandler):
             os.remove(self._db_file)
 
 
-def main():
+def run_tests(tests_dir=None):
+    if not tests_dir:
+        tests_dir = os.getcwd()
     handlers = {}
     for handler_cls in BaseTestHandler.iter_handlers():
         for extension in handler_cls.extensions:
             handlers[extension] = handler_cls
     suite = unittest.TestSuite()
-    for dirpath, _, filenames in sorted(os.walk(ROOT_DIR), key=lambda t: t[0]):
-        if dirpath != ROOT_DIR:
+    for dirpath, _, filenames in sorted(os.walk(tests_dir), key=lambda t: t[0]):
+        if dirpath != tests_dir:
             for filename in sorted(filenames):
                 extension = os.path.splitext(filename)[1]
                 if extension in handlers:
                     src_file = os.path.join(dirpath, filename)
-                    handler = handlers[extension](src_file)
+                    handler = handlers[extension](tests_dir, src_file)
                     suite.addTest(handler)
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
@@ -203,4 +204,9 @@ def main():
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    desc = 'Run all the programs and check they produce the expected output.'
+    parser = argparse.ArgumentParser(description=desc)
+    parser.add_argument('-d', metavar='DIR', default=None,
+                        help='directory containing the programs')
+    args = parser.parse_args()
+    sys.exit(run_tests(args.d))
