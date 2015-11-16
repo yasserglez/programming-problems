@@ -3,10 +3,7 @@ CREATE TABLE beatles (
   name VARCHAR(16)
 );
 
-INSERT INTO beatles
-  (id, name)
-VALUES
-  (1, "John"),
-  (2, "Paul"),
-  (3, "George"),
-  (4, "Ringo");
+INSERT INTO beatles VALUES (1, "John");
+INSERT INTO beatles VALUES (2, "Paul");
+INSERT INTO beatles VALUES (3, "George");
+INSERT INTO beatles VALUES (4, "Ringo");
