@@ -15,7 +15,7 @@ class BaseTestHandler(unittest.TestCase):
 
     def __init__(self, tests_dir, src_file):
         super().__init__()
-        self._tests_dir = os.path.abspath(tests_dir)
+        self._tests_dir = tests_dir
         self._src_file = os.path.join(self._tests_dir, src_file)
         self._src_dir = os.path.dirname(self._src_file)
         basename = os.path.splitext(self._src_file)[0]
@@ -185,19 +185,19 @@ class SQLTestHandler(BaseTestHandler):
 def run_tests(tests_dir=None):
     if not tests_dir:
         tests_dir = os.getcwd()
+    tests_dir = os.path.abspath(tests_dir)
     handlers = {}
     for handler_cls in BaseTestHandler.iter_handlers():
         for extension in handler_cls.extensions:
             handlers[extension] = handler_cls
     suite = unittest.TestSuite()
     for dirpath, _, filenames in sorted(os.walk(tests_dir), key=lambda t: t[0]):
-        if dirpath != tests_dir:
-            for filename in sorted(filenames):
-                extension = os.path.splitext(filename)[1]
-                if extension in handlers:
-                    src_file = os.path.join(dirpath, filename)
-                    handler = handlers[extension](tests_dir, src_file)
-                    suite.addTest(handler)
+        for filename in sorted(f for f in filenames if f != 'run_tests.py'):
+            extension = os.path.splitext(filename)[1]
+            if extension in handlers:
+                src_file = os.path.join(dirpath, filename)
+                handler = handlers[extension](tests_dir, src_file)
+                suite.addTest(handler)
     runner = unittest.TextTestRunner(verbosity=2)
     result = runner.run(suite)
     return (0 if result.wasSuccessful() else 1)
