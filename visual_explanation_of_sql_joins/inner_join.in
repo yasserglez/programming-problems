@@ -1,0 +1,19 @@
+CREATE TABLE TableA (
+  id INTEGER PRIMARY KEY,
+  name VARCHAR(16)
+);
+
+INSERT INTO TableA VALUES (1, "Pirate");
+INSERT INTO TableA VALUES (2, "Monkey");
+INSERT INTO TableA VALUES (3, "Ninja");
+INSERT INTO TableA VALUES (4, "Spaghetti");
+
+CREATE TABLE TableB (
+  id INTEGER PRIMARY KEY,
+  name VARCHAR(16)
+);
+
+INSERT INTO TableB VALUES (1, "Rutabaga");
+INSERT INTO TableB VALUES (2, "Pirate");
+INSERT INTO TableB VALUES (3, "Darth Vader");
+INSERT INTO TableB VALUES (4, "Ninja");
