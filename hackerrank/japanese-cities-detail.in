@@ -1,0 +1,17 @@
+CREATE TABLE City (
+  ID INT(11),
+  Name CHAR(35),
+  CountryCode CHAR(3),
+  District CHAR(20),
+  Population INT(11)
+);
+
+INSERT INTO City VALUES (3878, "Scottsdale", "USA", "Arizona", 202705);
+INSERT INTO City VALUES (3965, "Corona", "USA", "California", 124966);
+INSERT INTO City VALUES (3973, "Concord", "USA", "California", 121780);
+INSERT INTO City VALUES (3977, "Cedar Rapids", "USA", "Iowa", 120758);
+INSERT INTO City VALUES (3982, "Coral Springs", "USA", "Florida", 117549);
+INSERT INTO City VALUES (4054, "Fairfield", "USA", "California", 92256);
+INSERT INTO City VALUES (4058, "Boulder", "USA", "Colorado", 91238);
+INSERT INTO City VALUES (4061, "Fall River", "USA", "Massachusetts", 90555);
+INSERT INTO City VALUES (1661, "Sayama", "JPN", "Saitama", 162472);
