@@ -1,0 +1,36 @@
+CREATE TABLE Users (
+  Users_Id INTEGER PRIMARY KEY,
+  Banned VARCHAR(3),
+  Role VARCHAR(7)
+);
+
+INSERT INTO Users VALUES (1, "No", "client");
+INSERT INTO Users VALUES (2, "Yes", "client");
+INSERT INTO Users VALUES (3, "No", "client");
+INSERT INTO Users VALUES (4, "No", "client");
+INSERT INTO Users VALUES (10, "No", "driver");
+INSERT INTO Users VALUES (11, "No", "driver");
+INSERT INTO Users VALUES (12, "No", "driver");
+INSERT INTO Users VALUES (13, "No", "driver");
+
+CREATE TABLE Trips (
+  Id INTEGER PRIMARY KEY,
+  Client_Id INTEGER,
+  Driver_Id INTEGER,
+  City_Id INTEGER,
+  Status VARCHAR(19),
+  Request_at CHARACTER(10),
+  FOREIGN KEY(Client_Id) REFERENCES Users(Users_Id),
+  FOREIGN KEY(Driver_Id) REFERENCES Users(Users_Id)
+);
+
+INSERT INTO Trips VALUES (1, 1, 10, 1, " completed", "2013-10-01");
+INSERT INTO Trips VALUES (2, 2, 11, 1, "cancelled_by_driver", "2013-10-01");
+INSERT INTO Trips VALUES (3, 3, 12, 6, " completed", "2013-10-01");
+INSERT INTO Trips VALUES (4, 4, 13, 6, "cancelled_by_client", "2013-10-01");
+INSERT INTO Trips VALUES (5, 1, 10, 1, " completed", "2013-10-02");
+INSERT INTO Trips VALUES (6, 2, 11, 6, " completed", "2013-10-02");
+INSERT INTO Trips VALUES (7, 3, 12, 6, " completed", "2013-10-02");
+INSERT INTO Trips VALUES (8, 2, 12, 12, "completed", "2013-10-03");
+INSERT INTO Trips VALUES (9, 3, 10, 12, "completed", "2013-10-03");
+INSERT INTO Trips VALUES (10, 4, 13, 12, "cancelled_by_driver", "2013-10-03");
