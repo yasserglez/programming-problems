@@ -1,9 +1,9 @@
-Programming problems
-====================
+## Programming Practice Problems
 
 [![Build Status](https://travis-ci.org/yasserglez/programming-problems.svg?branch=master)](https://travis-ci.org/yasserglez/programming-problems)
 
-This repository contains solutions to different programming problems.
+This repository contains my solutions to different programming
+practice problems.
 
 The `run_tests.py` script compiles and runs all the programs,
 checking they produce the expected output. Currently it supports
@@ -24,8 +24,7 @@ content is passed as the standard input when running the program
 (in the case of SQL scripts, the `.in` file is used to initialize
 a SQLite database).
 
-Author
-------
+### Author
 
 Yasser Gonzalez
 * Homepage - http://yassergonzalez.com
