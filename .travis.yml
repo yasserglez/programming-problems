@@ -12,8 +12,9 @@ addons:
       - sqlite3
 before_install:
   # Install a more recent Scala version
-  - wget http://downloads.lightbend.com/scala/2.11.7/scala-2.11.7.tgz
-  - sudo dpkg -i scala-2.11.7.tgz
+  - wget http://www.scala-lang.org/files/archive/scala-2.11.6.deb
+  - sudo dpkg -i scala-2.11.6.deb
+  - rm scala-2.11.6.deb
   # Install Conda (based on http://conda.pydata.org/docs/travis.html)
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
