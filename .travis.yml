@@ -10,8 +10,10 @@ addons:
       - g++
       - default-jdk
       - sqlite3
-  hostname: programming-problems
 before_install:
+  # https://github.com/travis-ci/travis-ci/issues/5227
+  - sudo hostname "$(hostname | cut -c1-63)"
+  - sed -e "s/^\\(127\\.0\\.0\\.1.*\\)/\\1 $(hostname | cut -c1-63)/" /etc/hosts | sudo tee /etc/hosts
   # Install a more recent Scala version
   - wget http://www.scala-lang.org/files/archive/scala-2.11.6.deb
   - sudo dpkg -i scala-2.11.6.deb
