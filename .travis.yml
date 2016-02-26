@@ -9,10 +9,12 @@ addons:
       - gcc
       - g++
       - default-jdk
-      - scala
       - sqlite3
 before_install:
-  # Based on http://conda.pydata.org/docs/travis.html
+  # Install a more recent Scala version
+  - wget http://downloads.lightbend.com/scala/2.11.7/scala-2.11.7.tgz
+  - sudo dpkg -i scala-2.11.7.tgz
+  # Install Conda (based on http://conda.pydata.org/docs/travis.html)
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh
   - bash miniconda.sh -b -p $HOME/miniconda
   - rm miniconda.sh
