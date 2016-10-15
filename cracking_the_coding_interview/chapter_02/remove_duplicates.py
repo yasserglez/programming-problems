@@ -8,7 +8,7 @@ class ListNode(object):
         self.next = None
 
 
-def remove_suplicates(head):
+def remove_duplicates(head):
     values = set()
     prev = None
     curr = head
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     n3 = n1c.next = ListNode(3)
     n2b = n3.next = ListNode(2)
 
-    remove_suplicates(head)
+    remove_duplicates(head)
 
     values = []
     curr = head
