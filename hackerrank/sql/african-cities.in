@@ -1,0 +1,32 @@
+CREATE TABLE city (
+  id INTEGER,
+  name VARCHAR(17),
+  countrycode VARCHAR(3),
+  district VARCHAR(20),
+  population integer
+);
+
+INSERT INTO city
+  (name, countrycode, population)
+VALUES
+  ('city1', 'country1', 10000),
+  ('city2', 'country4', 24000),
+  ('city3', 'country3', 5000),
+  ('city4', 'country2', 45000);
+
+CREATE TABLE country (
+  code VARCHAR(3),
+  name VARCHAR(44),
+  continent VARCHAR(13)
+);
+
+INSERT INTO country
+  (code, continent)
+VALUES
+  ('country1', 'Asia'),
+  ('country2', 'Africa'),
+  ('country3', 'Asia'),
+  ('country4', 'Europe'),
+  ('country5', 'South America'),
+  ('country6', 'Australia'),
+  ('country7', 'Europe');
