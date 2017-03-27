@@ -1,0 +1,38 @@
+CREATE TABLE Students (
+  ID INTEGER,
+  Name VARCHAR(255)
+);
+
+INSERT INTO Students
+  (ID, Name)
+VALUES
+  (1, 'Ashley'),
+  (2, 'Samantha'),
+  (3, 'Julia'),
+  (4, 'Scarlet');
+
+CREATE TABLE Friends (
+  ID INTEGER,
+  Friend_ID INTEGER
+);
+
+INSERT INTO Friends
+  (ID, Friend_ID)
+VALUES
+  (1, 2),
+  (2, 3),
+  (3, 4),
+  (4, 1);
+
+CREATE TABLE Packages (
+  ID INTEGER,
+  Salary REAL
+);
+
+INSERT INTO Packages
+  (ID, Salary)
+VALUES
+  (1, 15.20),
+  (2, 10.06),
+  (3, 11.55),
+  (4, 12.12);

@@ -3,7 +3,7 @@ CREATE TABLE city (
   name VARCHAR(17),
   countrycode VARCHAR(3),
   district VARCHAR(20),
-  population integer
+  population INTEGER
 );
 
 INSERT INTO city
