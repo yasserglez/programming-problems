@@ -14,11 +14,11 @@ def maxsubarray_contiguous(numbers):
 
 def maxsubarray_noncontiguous(numbers):
     max_number = numbers[0]
-    max_possitive_sum = max(0, numbers[0])
+    max_positive_sum = max(0, numbers[0])
     for n in numbers[1:]:
         max_number = max(n, max_number)
-        max_possitive_sum += max(n, 0)
-    return max_possitive_sum if max_possitive_sum > 0 else max_number
+        max_positive_sum += max(n, 0)
+    return max_positive_sum if max_positive_sum > 0 else max_number
 
 
 def maxsubarray(numbers):
