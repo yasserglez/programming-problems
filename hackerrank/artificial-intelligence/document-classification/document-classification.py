@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import SGDClassifier
-from sklearn.cross_validation import cross_val_score
+from sklearn.model_selection import cross_val_score
 
 
 def load_corpus(f, has_classes=True):
@@ -28,7 +28,7 @@ def load_corpus(f, has_classes=True):
 def train_classifier(corpus):
     model = Pipeline([
         ('tfidf', TfidfVectorizer(stop_words='english')),
-        ('classifier', SGDClassifier(loss='log', penalty='none', n_iter=100)),
+        ('classifier', SGDClassifier(loss='log', penalty='none', max_iter=100)),
     ])
     # scores = cross_val_score(model, corpus[0], corpus[1], cv=10, n_jobs=-1)
     # print('CV score:', np.mean(scores))
