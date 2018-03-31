@@ -1,0 +1,10 @@
+CREATE TABLE seat (
+    id INTEGER PRIMARY KEY,
+    student VARCHAR(255)
+);
+
+INSERT INTO seat VALUES (1, "Abbot");
+INSERT INTO seat VALUES (2, "Doris");
+INSERT INTO seat VALUES (3, "Emerson");
+INSERT INTO seat VALUES (4, "Green");
+INSERT INTO seat VALUES (5, "Jeames");
