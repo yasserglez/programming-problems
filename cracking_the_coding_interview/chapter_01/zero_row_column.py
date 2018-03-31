@@ -31,7 +31,7 @@ def zero_row_column2(matrix, inplace=True, eps=1e-6):
             matrix[i][j] = 0
     for j in J:
         for i in range(len(matrix)):
-            matrix[j][j] = 0
+            matrix[i][j] = 0
     return matrix
 
 
