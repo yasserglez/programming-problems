@@ -24,9 +24,9 @@ object Solution {
 
   def main(args: Array[String]): Unit = {
     val lines = io.Source.stdin.getLines()
-    val testCases = lines.next.toInt
+    val testCases = lines.next().toInt
     for (i <- 1 to testCases) {
-      val numbers = lines.next.split(" ").map(_.toInt).toList
+      val numbers = lines.next().split(" ").map(_.toInt).toList
       println(commonDivisors(numbers(0), numbers(1)))
     }
 

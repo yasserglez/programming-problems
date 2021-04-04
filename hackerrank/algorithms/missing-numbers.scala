@@ -15,7 +15,7 @@ object Solution {
     println(result.map(_.toString).mkString(" "))
   }
 
-  def readListFromStdIn(): Seq[Int] = io.StdIn.readLine().split(" ").map(_.toInt)
+  def readListFromStdIn(): Seq[Int] = io.StdIn.readLine().split(" ").toIndexedSeq.map(_.toInt)
 
   def findMissingNumbers(firstList: Seq[Int], secondList: Seq[Int]): Seq[Int] = {
     val firstListCounts = countNumbers(firstList)
@@ -26,5 +26,5 @@ object Solution {
     }.toSeq.sorted
   }
 
-  def countNumbers(list: Seq[Int]): Map[Int, Int] = list.groupBy(identity).mapValues(_.size).toMap
+  def countNumbers(list: Seq[Int]): Map[Int, Int] = list.groupBy(identity).view.mapValues(_.size).toMap
 }

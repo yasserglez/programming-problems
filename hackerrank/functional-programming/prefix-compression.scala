@@ -10,7 +10,7 @@ object Solution {
 
   def main(args: Array[String]): Unit = {
     val lines = io.Source.stdin.getLines()
-    val result = prefixCompression(lines.next, lines.next)
+    val result = prefixCompression(lines.next(), lines.next())
     result foreach (s => println(s"${s.length} $s"))
   }
 }

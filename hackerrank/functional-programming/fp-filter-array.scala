@@ -7,7 +7,7 @@ object Solution {
 
   def main(args: Array[String]): Unit = {
     val input = io.Source.stdin.getLines()
-    val delim = input.take(1).map(_.toInt).next
+    val delim = input.take(1).map(_.toInt).next()
     val arr = input.map(_.toInt).toList
     f(delim, arr).foreach(println)
   }

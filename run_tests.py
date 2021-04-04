@@ -149,7 +149,7 @@ class ScalaTestHandler(BaseTestHandler):
     extensions = ('.scala', )
 
     def runTest(self):
-        super().runTest(['scala', '-howtorun:script', self._src_file])
+        super().runTest(['scala', '-deprecation', '-howtorun:script', self._src_file])
 
 
 class SQLTestHandler(BaseTestHandler):

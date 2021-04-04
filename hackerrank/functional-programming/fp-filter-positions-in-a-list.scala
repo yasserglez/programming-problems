@@ -5,7 +5,7 @@ object Solution {
     (1 to arr.length - 1 by 2).map(arr(_)).toList
   }
 
-  def main(args: Array[String]) {
+  def main(args: Array[String]) : Unit = {
     val input = io.Source.stdin.getLines()
     val arr = input.map(_.toInt).toList
     f(arr).foreach(println)

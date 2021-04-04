@@ -13,6 +13,6 @@ object Solution {
 
   def main(args: Array[String]): Unit = {
     val lines = io.Source.stdin.getLines()
-    pascalTriangle(lines.next.toInt)
+    pascalTriangle(lines.next().toInt)
   }
 }
