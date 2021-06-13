@@ -23,9 +23,9 @@ jobs:
         sudo apt-get -y install default-jdk
     - name: Install Scala
       run: |
-        wget http://www.scala-lang.org/files/archive/scala-2.12.14.deb
-        sudo dpkg -i scala-2.12.14.deb
-        rm scala-2.12.14.deb
+        wget http://www.scala-lang.org/files/archive/scala-2.13.6.deb
+        sudo dpkg -i scala-2.13.6.deb
+        rm scala-2.13.6.deb
     - name: Install SQLite
       run: |
         sudo apt-get -y install sqlite3
