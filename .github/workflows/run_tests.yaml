@@ -1,0 +1,43 @@
+name: run_tests.py
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Install Python
+      run: |
+        sudo apt-get -y install python3
+        pip3 install numpy scipy scikit-learn pandas nltk
+    - name: Install R
+      run: |
+        sudo apt-get -y install r-base
+    - name: Install C/C++
+      run: |
+        sudo apt-get -y install gcc g++
+    - name: Install Java
+      run: |
+        sudo apt-get -y install default-jdk
+    - name: Install Scala
+      run: |
+        wget http://www.scala-lang.org/files/archive/scala-2.12.14.deb
+        sudo dpkg -i scala-2.12.14.deb
+        rm scala-2.12.14.deb
+    - name: Install SQLite
+      run: |
+        sudo apt-get -y install sqlite3
+    - name: Show versions
+      run: |
+        python3 --version
+        Rscript --version
+        gcc --version
+        g++ --version
+        javac -version
+        scalac -version
+        sqlite3 -version
+    - name: run_tests.py
+      run: |
+        ./run_tests.py
